@@ -1,2 +1,2 @@
 # spring-boot-microservices
-Microservices App with SpringBoot
+Microservices Application with SpringBoot
