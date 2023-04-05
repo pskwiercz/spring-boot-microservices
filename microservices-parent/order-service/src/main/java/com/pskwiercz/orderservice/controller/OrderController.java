@@ -1,11 +1,9 @@
 package com.pskwiercz.orderservice.controller;
 
 import com.pskwiercz.orderservice.dto.OrderRequest;
-import com.pskwiercz.orderservice.dto.OrderResponse;
 import com.pskwiercz.orderservice.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,9 +26,4 @@ public class OrderController {
         return "Order placed successfuly";
     }
 
-    @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    public List<OrderResponse> getAllOrders() {
-        return orderService.getAllOrders();
-    }
 }

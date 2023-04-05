@@ -1,6 +1,5 @@
 package com.pskwiercz.orderservice.dto;
 
-import com.pskwiercz.orderservice.model.OrderLineItems;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
