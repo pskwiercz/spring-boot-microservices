@@ -7,6 +7,7 @@ import com.pskwiercz.orderservice.model.Order;
 import com.pskwiercz.orderservice.model.OrderLineItems;
 import com.pskwiercz.orderservice.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -18,10 +19,11 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    public final WebClient webClient;
+    public final WebClient.Builder webClientBuilder;
 
     public void placeOrder(OrderRequest orderRequest) {
         Order order = new Order();
@@ -39,8 +41,8 @@ public class OrderService {
                 .map(OrderLineItems::getSkuCode)
                 .toList();
 
-        InventoryResponse[] invenetoryResponse = webClient.get()
-                .uri("http://localhost:8082/api/inventory",
+        InventoryResponse[] invenetoryResponse = webClientBuilder.build().get()
+                .uri("http://inventory-service/api/inventory",
                         uriBuilder -> uriBuilder.queryParam("skuCode", skuCodes).build())
                 .retrieve()
                 .bodyToMono(InventoryResponse[].class)
@@ -51,6 +53,7 @@ public class OrderService {
 
         if (allProductsInStock) {
             orderRepository.save(order);
+            log.info("Order {} is saved", order.getId());
         } else {
             throw new IllegalArgumentException("Product is out of stock");
         }
